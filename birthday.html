@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Alol! ⚡</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  
+  <style>
+    :root {
+      --bg-color: #0d0f17;
+      --card-bg: rgba(22, 27, 38, 0.85);
+      --accent-color: #e11d48;
+      --text-color: #ffffff;
+      --subtext-color: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      padding: 20px 15px;
+      color: var(--text-color);
+      background: var(--bg-color);
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at center, rgba(30, 41, 59, 0.5) 0%, rgba(13, 15, 23, 1) 100%);
+      z-index: 1;
+    }
+
+    .lights-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      z-index: 5;
+      opacity: 0;
+      transition: opacity 1s ease;
+      pointer-events: none;
+    }
+
+    .lights-container.active {
+      opacity: 1;
+    }
+
+    .light-bulb {
+      width: 12px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fef08a;
+      box-shadow: 0 0 15px #fef08a, 0 0 25px #fde047;
+      animation: glow 1.5s infinite alternate ease-in-out;
+    }
+
+    .light-bulb:nth-child(even) {
+      background: #f43f5e;
+      box-shadow: 0 0 15px #f43f5e, 0 0 25px #fb7185;
+      animation-delay: 0.75s;
+    }
+
+    @keyframes glow {
+      from { opacity: 0.4; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1.1); }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 440px;
+      z-index: 10;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 28px;
+      padding: 35px 22px;
+      text-align: center;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .subtitle-en {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: var(--subtext-color);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .main-title-en {
+      font-family: 'Cinzel', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 25px;
+      letter-spacing: 1px;
+    }
+
+    .btn-action {
+      background: var(--accent-color);
+      color: #ffffff;
+      border: none;
+      padding: 16px 30px;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(225, 29, 72, 0.4);
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 15px;
+      letter-spacing: 1px;
+    }
+
+    .btn-action:active {
+      transform: scale(0.96);
+    }
+
+    .step-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 25px 20px;
+      margin-bottom: 20px;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .photo-card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .photo-card:hover img {
+      transform: scale(1.08);
+    }
+
+    .photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
+      display: flex;
+      align-items: flex-end;
+      padding: 10px;
+      font-size: 11px;
+      color: #e2e8f0;
+      text-align: right;
+    }
+
+    .greeting-text {
+      font-size: 15px;
+      color: #cbd5e1;
+      line-height: 1.9;
+      text-align: right;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 20px;
+      border-radius: 18px;
+      border-right: 3px solid var(--accent-color);
+      margin: 20px 0;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    .love-footer {
+      font-family: 'Cinzel', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #f43f5e;
+      margin-top: 15px;
+      text-align: center;
+      direction: ltr;
+    }
+
+    .video-card {
+      background: #000;
+      border-radius: 18px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .video-card video {
+      width: 100%;
+      border-radius: 18px;
+      max-height: 280px;
+      display: block;
+    }
+
+    .balloon {
+      position: fixed;
+      bottom: -100px;
+      width: 35px;
+      height: 45px;
+      background: var(--accent-color);
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      z-index: 4;
+      animation: floatUp 6s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(-120vh) rotate(20deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="lights-container" id="lights">
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+  </div>
+
+  <audio id="bgSong" src="Song.m4a" loop></audio>
+
+  <div class="container">
+    <div class="card">
+      
+      <div id="step1" class="step-box">
+        <div class="subtitle-en">A Cinematic Journey</div>
+        <div class="main-title-en">Happy Birthday, Alol!</div>
+        <button class="btn-action" onclick="nextStep(2)">OPEN YOUR GIFT 🎁</button>
+      </div>
+
+      <div id="step2" class="step-box hidden">
+        <div class="subtitle-en">The Stage Is Set...</div>
+        <div class="main-title-en" style="font-size: 20px;">Light up the moment</div>
+        <button class="btn-action" onclick="turnOnLights()">TURN ON LIGHTS 💡</button>
+      </div>
+
+      <div id="step3" class="step-box hidden">
+        <div class="subtitle-en">Music Makes It Better...</div>
+        <div class="main-title-en" style="font-size: 20px;">Set the mood</div>
+        <button class="btn-action" onclick="playMusic()">PLAY MUSIC 🎵</button>
+      </div>
+
+      <div id="step4" class="step-box hidden">
+        <div class="subtitle-en">Let The Colors Fly!</div>
+        <div class="main-title-en" style="font-size: 20px;">Time to celebrate</div>
+        <button class="btn-action" onclick="flyBalloons()">FLY BALLOONS 🎈</button>
+      </div>
+
+      <div id="step5" class="step-box hidden">
+        <div class="subtitle-en">Almost There...</div>
+        <div class="main-title-en" style="font-size: 20px;">A special note for you</div>
+        <button class="btn-action" onclick="showLetter()">SHOW THE MESSAGE ✉️</button>
+      </div>
+
+      <div id="step6" class="hidden">
+        <div class="subtitle-en">My Dearest Alol</div>
+        <div class="main-title-en" style="font-size: 24px; margin-bottom: 15px;">Happy Birthday! 🎉</div>
+
+        <div class="greeting-text">
+          كل سنة وأنت طيب يا علول باشا، العمر كله ليك يا رب وأنت قارفني كده، حسبي الله بس على قلبي زي العسل مقدرش أعيش من غير كده والله (ربنا يسامحني على الكدب ده) 😜.<br><br>
+          المهم إن شاء الله إن شاء الله تحب الكلية وتنجح فيها وتسافر سويسرا، ألمانيا بقا أي دولة تقبض فيها باليورو أو الدولار، يا سلام لو لكسمبورغ! اهو تسافر بره بس اوعا اوعععععا تنساني علشان هموتك فيها على فكرة 🔪.<br><br>
+          ويا رب تحقق كل أحلامك وتبقى كل يوم وكل ثانية أقرب لربنا ويجعلك من عباده الصالحين، ويا رب يجعلني خفيفة على قلبك علشان أنا قعدة شويتين كده 😎
+          <div class="love-footer">Love you aloly 🔪🤍</div>
+        </div>
+
+        <button class="btn-action" onclick="showMemories()">OUR MEMORIES 📸</button>
+      </div>
+
+      <div id="step7" class="hidden">
+        <div class="subtitle-en">Moments In Time</div>
+        <div class="main-title-en" style="font-size: 22px; margin-bottom: 15px;">Our Story 🌟</div>
+
+        <div class="photo-grid">
+          <div class="photo-card">
+            <img src="mario.jpg" alt="Memory 1">
+            <div class="photo-overlay">You make my world brighter ✨</div>
+          </div>
+          <div class="photo-card">
+            <img src="mario.jpg" alt="Memory 2">
+            <div class="photo-overlay">Our memories are forever ♾️</div>
+          </div>
+          <div class="photo-card">
+            <img src="mario.jpg" alt="Memory 3">
+            <div class="photo-overlay">Every second is a gift 🎁</div>
+          </div>
+          <div class="photo-card">
+            <img src="mario.jpg" alt="Memory 4">
+            <div class="photo-overlay">To many more adventures 🚀</div>
+          </div>
+        </div>
+
+        <button class="btn-action" onclick="showVideos()">WATCH VIDEOS 🎬</button>
+      </div>
+
+      <div id="step8" class="hidden">
+        <div class="subtitle-en">A Moment For You</div>
+        <div class="main-title-en" style="font-size: 22px; margin-bottom: 20px;">Special Videos 🎥</div>
+
+        <div class="video-card">
+          <video controls preload="metadata"><source src="vid1.mp4" type="video/mp4"></video>
+        </div>
+        <div class="video-card">
+          <video controls preload="metadata"><source src="vid2.mp4" type="video/mp4"></video>
+        </div>
+        <div class="video-card">
+          <video controls preload="metadata"><source src="vid3.mp4" type="video/mp4"></video>
+        </div>
+        <div class="video-card">
+          <video controls preload="metadata"><source src="vid4.mp4" type="video/mp4"></video>
+        </div>
+        <div class="video-card">
+          <video controls preload="metadata"><source src="vid5.mp4" type="video/mp4"></video>
+        </div>
+        <div class="video-card">
+          <video controls preload="metadata"><source src="vid6.mp4" type="video/mp4"></video>
+        </div>
+
+        <button class="btn-action" style="margin-top:10px;" onclick="restartAll()">REPLAY THE MAGIC 🔄</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function hideAllSteps() {
+      for (let i = 1; i <= 8; i++) {
+        const el = document.getElementById('step' + i);
+        if (el) el.classList.add('hidden');
+      }
+    }
+
+    function nextStep(stepNumber) {
+      hideAllSteps();
+      const nextEl = document.getElementById('step' + stepNumber);
+      if (nextEl) nextEl.classList.remove('hidden');
+    }
+
+    function turnOnLights() {
+      document.getElementById('lights').classList.add('active');
+      nextStep(3);
+    }
+
+    function playMusic() {
+      const audio = document.getElementById('bgSong');
+      if (audio) {
+        audio.play().catch(() => {});
+      }
+      nextStep(4);
+    }
+
+    function flyBalloons() {
+      for (let i = 0; i < 15; i++) {
+        setTimeout(() => {
+          const balloon = document.createElement('div');
+          balloon.className = 'balloon';
+          balloon.style.left = Math.random() * 90 + 'vw';
+          balloon.style.animationDuration = (Math.random() * 3 + 4) + 's';
+          balloon.style.backgroundColor = ['#e11d48', '#38bdf8', '#f59e0b', '#10b981', '#8b5cf6'][Math.floor(Math.random() * 5)];
+          document.body.appendChild(balloon);
+          setTimeout(() => balloon.remove(), 7000);
+        }, i * 300);
+      }
+      nextStep(5);
+    }
+
+    function showLetter() {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+      nextStep(6);
+    }
+
+    function showMemories() {
+      nextStep(7);
+    }
+
+    function showVideos() {
+      nextStep(8);
+    }
+
+    function restartAll() {
+      nextStep(1);
+    }
+  </script>
+</body>
+</html>
