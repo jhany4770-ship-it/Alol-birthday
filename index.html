@@ -266,6 +266,11 @@
     <div class="light-bulb"></div>
   </div>
 
+  <!-- مشغل الموسيقى MP3 -->
+  <audio id="bgSong" loop preload="auto" playsinline>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
   <div class="container">
     <div class="card">
       
@@ -284,14 +289,7 @@
       <div id="step3" class="step-box hidden">
         <div class="subtitle-en">Music Makes It Better...</div>
         <div class="main-title-en" style="font-size: 20px;">Set the mood</div>
-        
-        <div class="video-card" style="margin-top: 15px;">
-          <video id="songVideo" controls playsinline preload="auto">
-            <source src="song.mp4" type="video/mp4">
-          </video>
-        </div>
-
-        <button class="btn-action" onclick="nextStep(4)">CONTINUE TO BALLOONS 🎈</button>
+        <button class="btn-action" onclick="playMusic()">PLAY MUSIC 🎵</button>
       </div>
 
       <div id="step4" class="step-box hidden">
@@ -392,6 +390,14 @@
     function turnOnLights() {
       document.getElementById('lights').classList.add('active');
       nextStep(3);
+    }
+
+    function playMusic() {
+      const audio = document.getElementById('bgSong');
+      if (audio) {
+        audio.play().catch(e => console.log(e));
+      }
+      nextStep(4);
     }
 
     function flyBalloons() {
