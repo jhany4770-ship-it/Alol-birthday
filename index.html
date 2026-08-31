@@ -253,6 +253,10 @@
       0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
       100% { transform: translateY(-120vh) rotate(20deg); opacity: 0; }
     }
+
+    .audio-controls {
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -266,7 +270,11 @@
     <div class="light-bulb"></div>
   </div>
 
-  <audio id="bgSong" src="Song.m4a" loop></audio>
+  <!-- تم ربط اسم الملف المرفوع song.mp4 مع خاصية PlaysInline للموبايل -->
+  <audio id="bgSong" loop playsinline preload="auto">
+    <source src="song.mp4" type="audio/mp4">
+    <source src="song.mp4" type="audio/mpeg">
+  </audio>
 
   <div class="container">
     <div class="card">
@@ -287,6 +295,11 @@
         <div class="subtitle-en">Music Makes It Better...</div>
         <div class="main-title-en" style="font-size: 20px;">Set the mood</div>
         <button class="btn-action" onclick="playMusic()">PLAY MUSIC 🎵</button>
+        <div class="audio-controls">
+          <audio controls style="width: 100%; margin-top: 15px; height: 35px;">
+            <source src="song.mp4" type="audio/mp4">
+          </audio>
+        </div>
       </div>
 
       <div id="step4" class="step-box hidden">
@@ -321,19 +334,19 @@
 
         <div class="photo-grid">
           <div class="photo-card">
-            <img src="mario.jpg" alt="Memory 1">
+            <img src="mario.jpeg" alt="Memory 1">
             <div class="photo-overlay">You make my world brighter ✨</div>
           </div>
           <div class="photo-card">
-            <img src="mario.jpg" alt="Memory 2">
+            <img src="mario.jpeg" alt="Memory 2">
             <div class="photo-overlay">Our memories are forever ♾️</div>
           </div>
           <div class="photo-card">
-            <img src="mario.jpg" alt="Memory 3">
+            <img src="mario.jpeg" alt="Memory 3">
             <div class="photo-overlay">Every second is a gift 🎁</div>
           </div>
           <div class="photo-card">
-            <img src="mario.jpg" alt="Memory 4">
+            <img src="mario.jpeg" alt="Memory 4">
             <div class="photo-overlay">To many more adventures 🚀</div>
           </div>
         </div>
@@ -392,7 +405,9 @@
     function playMusic() {
       const audio = document.getElementById('bgSong');
       if (audio) {
-        audio.play().catch(() => {});
+        audio.play().catch(function(err) {
+          console.log("Audio play error: ", err);
+        });
       }
       nextStep(4);
     }
