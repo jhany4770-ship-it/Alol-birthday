@@ -254,8 +254,11 @@
       100% { transform: translateY(-120vh) rotate(20deg); opacity: 0; }
     }
 
-    .audio-controls {
-      margin-top: 10px;
+    .audio-player-box {
+      margin: 20px 0 10px 0;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 12px;
+      border-radius: 15px;
     }
   </style>
 </head>
@@ -269,12 +272,6 @@
     <div class="light-bulb"></div>
     <div class="light-bulb"></div>
   </div>
-
-  <!-- تم ربط اسم الملف المرفوع song.mp4 مع خاصية PlaysInline للموبايل -->
-  <audio id="bgSong" loop playsinline preload="auto">
-    <source src="song.mp4" type="audio/mp4">
-    <source src="song.mp4" type="audio/mpeg">
-  </audio>
 
   <div class="container">
     <div class="card">
@@ -294,12 +291,16 @@
       <div id="step3" class="step-box hidden">
         <div class="subtitle-en">Music Makes It Better...</div>
         <div class="main-title-en" style="font-size: 20px;">Set the mood</div>
-        <button class="btn-action" onclick="playMusic()">PLAY MUSIC 🎵</button>
-        <div class="audio-controls">
-          <audio controls style="width: 100%; margin-top: 15px; height: 35px;">
+        
+        <div class="audio-player-box">
+          <p style="font-size: 13px; color: #cbd5e1; margin-bottom: 8px;">اضغط تشغيل للاستماع للأغنية 🎵</p>
+          <audio id="bgSong" controls style="width: 100%; height: 40px;" preload="auto">
+            <source src="song.mp4" type="video/mp4">
             <source src="song.mp4" type="audio/mp4">
           </audio>
         </div>
+
+        <button class="btn-action" onclick="nextStep(4)">CONTINUE TO BALLOONS 🎈</button>
       </div>
 
       <div id="step4" class="step-box hidden">
@@ -400,16 +401,6 @@
     function turnOnLights() {
       document.getElementById('lights').classList.add('active');
       nextStep(3);
-    }
-
-    function playMusic() {
-      const audio = document.getElementById('bgSong');
-      if (audio) {
-        audio.play().catch(function(err) {
-          console.log("Audio play error: ", err);
-        });
-      }
-      nextStep(4);
     }
 
     function flyBalloons() {
